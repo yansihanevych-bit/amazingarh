@@ -11,7 +11,7 @@ const en = {
     tag: 'Architecture by Ira. Obviously.', meta2: 'Architectural visualization · Warsaw — Poland', meta3: 'Selected work 2021 — 2024',
     sub: 'Light, <em>before</em> the walls.',
     intro: "I render houses that don't exist yet: the hour, the shadow, the weight of the air. So architects and their clients can stand inside a space before the first stone is laid.",
-    fig1: 'Fig. 01 — KZ House', fig2: 'Fig. 02 — Pluty, Type 2',
+    scroll: 'Scroll', fig1: 'Fig. 01 — KZ House', fig2: 'Fig. 02 — Pluty, Type 2',
   },
   manifesto: {
     label: 'Approach',
@@ -28,8 +28,9 @@ const en = {
     title: 'From noon <em>to night</em>', label: 'One house · three lights', credit: 'One house, one day · visualization by Iryna Riasnianska',
     hours: { noon: 'Noon', aft: 'Afternoon', golden: 'Golden hour', over: 'Overcast', canopy: 'Under canopy', dusk: 'Dusk', blue: 'Blue hour', night: 'Night' },
   },
-  index: { title: 'Index', label: 'Project · Architects · Light · Year', press: '↗ press', pub: 'Elements House<br>in Amazing Architecture' },
+  index: { title: 'Index', kicker: 'All projects', lead: 'Five private houses and one published study, each rendered for its own hour.', label: 'Project · Architects · Light · Year', architects: 'Architects', view: 'View study', read: 'Read the article', press: '↗ press', pub: 'Elements House<br>in Amazing Architecture' },
   about: {
+    kicker: 'Who I am', title: 'Iryna <em>Riasnianska</em>', role: 'Archviz artist · 3D visualizer', skills: ['Exterior', 'Interior', 'Concept'], cta: "Let's talk about your project",
     quote: 'Half archviz artist, half lighting technician. Fully responsible for the pun.',
     bio: [
       "I'm an archviz artist and 3D visualizer. Since 2021 I've worked alongside architects (most closely with Denis Davydov and the MCORP team) turning drawings of private houses into images that feel like memories of a place.",
@@ -41,6 +42,7 @@ const en = {
     based: 'Based in', basedV: 'Warsaw — Poland', fav: 'Favourite light', favV: 'The blue hour',
   },
   process: {
+    kicker: 'How I work',
     title: 'How a house <em>gets its light</em>',
     steps: [
       ['read', 'Reading the drawings', 'Plans, sections, the site. I look for what the architect cares about most, a courtyard, a cantilever, a long view, and build the image around it.'],
@@ -50,6 +52,7 @@ const en = {
     ] as [string, string, string][],
   },
   contact: {
+    kicker: 'Warsaw · Architectural visualization', intro: 'Send drawings or a model: you will get a reply within 24 hours.', role: 'Archviz artist · 3D visualizer', bullets: ['Tell me about the house: drawings, references, timing.', 'I reply within 24 hours.', 'A clear scope and timeline before we start.'], write: 'Write to Iryna', scope: 'Scope', scopes: ['1–3 views', '4–8 views', '9+ views', 'Animation'],
     title: 'Every building begins<br>as a <em>picture.</em>', email: 'Email', phone: 'Phone', copy: 'Copy email', copied: 'Copied',
     name: 'Name', studio: 'Studio', email2: 'Your email', msg: 'About the project', ph: 'Type of building, stage, number of views, timing', send: 'Write to Iryna', sending: 'Sending…',
     err: 'Please add your name, your email and a few words about the project.', sent: 'Thank you. Iryna will get back to you soon.',
@@ -77,7 +80,7 @@ const pl: Dict = {
     tag: 'Architektura od Iry. Oczywiście.', meta2: 'Wizualizacja architektury · Warszawa — Polska', meta3: 'Wybrane prace 2021 — 2024',
     sub: 'Światło, <em>zanim</em> staną ściany.',
     intro: 'Renderuję domy, których jeszcze nie ma: porę dnia, cień, ciężar powietrza. Żeby architekci i ich klienci mogli stanąć w przestrzeni, zanim położony zostanie pierwszy kamień.',
-    fig1: 'Ryc. 01 — KZ House', fig2: 'Ryc. 02 — Pluty, Type 2',
+    scroll: 'Przewiń', fig1: 'Ryc. 01 — KZ House', fig2: 'Ryc. 02 — Pluty, Type 2',
   },
   manifesto: {
     label: 'Podejście',
@@ -94,8 +97,9 @@ const pl: Dict = {
     title: 'Od południa <em>do nocy</em>', label: 'Jeden dom · trzy światła', credit: 'Jeden dom, jeden dzień · wizualizacja Iryna Riasnianska',
     hours: { noon: 'Południe', aft: 'Popołudnie', golden: 'Złota godzina', over: 'Pochmurno', canopy: 'Pod koronami drzew', dusk: 'Zmierzch', blue: 'Niebieska godzina', night: 'Noc' },
   },
-  index: { title: 'Indeks', label: 'Projekt · Architekci · Światło · Rok', press: '↗ prasa', pub: 'Elements House<br>w Amazing Architecture' },
+  index: { title: 'Indeks', kicker: 'Wszystkie projekty', lead: 'Pięć domów prywatnych i jedno opublikowane studium, każde wyrenderowane o swojej porze dnia.', label: 'Projekt · Architekci · Światło · Rok', architects: 'Architekci', view: 'Zobacz studium', read: 'Czytaj artykuł', press: '↗ prasa', pub: 'Elements House<br>w Amazing Architecture' },
   about: {
+    kicker: 'Kim jestem', title: 'Iryna <em>Riasnianska</em>', role: 'Artystka archviz · wizualizatorka 3D', skills: ['Elewacje', 'Wnętrza', 'Koncepcje'], cta: 'Porozmawiajmy o Twoim projekcie',
     quote: 'Pół artystka archviz, pół oświetleniowiec. W pełni odpowiedzialna za tę grę słów.',
     bio: [
       'Jestem artystką archviz i wizualizatorką 3D. Od 2021 roku pracuję z architektami (najbliżej z Denisem Davydovem i zespołem MCORP), zamieniając rysunki domów prywatnych w obrazy, które wyglądają jak wspomnienie miejsca.',
@@ -107,6 +111,7 @@ const pl: Dict = {
     based: 'Miejsce', basedV: 'Warszawa — Polska', fav: 'Ulubione światło', favV: 'Niebieska godzina',
   },
   process: {
+    kicker: 'Jak pracuję',
     title: 'Jak dom <em>dostaje swoje światło</em>',
     steps: [
       ['czytać', 'Czytanie rysunków', 'Rzuty, przekroje, działka. Szukam tego, na czym architektowi zależy najbardziej (dziedziniec, wspornik, długi widok) i wokół tego buduję obraz.'],
@@ -116,6 +121,7 @@ const pl: Dict = {
     ],
   },
   contact: {
+    kicker: 'Warszawa · Wizualizacja architektury', intro: 'Wyślij rysunki lub model: odpowiedź w ciągu 24 godzin.', role: 'Artystka archviz · wizualizatorka 3D', bullets: ['Opowiedz o domu: rysunki, referencje, termin.', 'Odpowiadam w ciągu 24 godzin.', 'Jasny zakres i harmonogram przed startem.'], write: 'Napisz do Iryny', scope: 'Zakres', scopes: ['1–3 ujęcia', '4–8 ujęć', '9+ ujęć', 'Animacja'],
     title: 'Każdy budynek<br>zaczyna się od <em>obrazu.</em>', email: 'E-mail', phone: 'Telefon', copy: 'Kopiuj e-mail', copied: 'Skopiowano',
     name: 'Imię', studio: 'Biuro', email2: 'Twój e-mail', msg: 'O projekcie', ph: 'Rodzaj budynku, etap, liczba ujęć, termin', send: 'Napisz do Iryny', sending: 'Wysyłanie…',
     err: 'Dodaj imię, e-mail i kilka słów o projekcie.', sent: 'Dziękuję. Iryna wkrótce się odezwie.',

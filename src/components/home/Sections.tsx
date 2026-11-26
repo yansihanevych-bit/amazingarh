@@ -1,9 +1,11 @@
 import type { Dict, Lang } from '@/content/i18n';
 import { contactInfo } from '@/content/i18n';
-import { altOf, projects, type Project } from '@/content/projects';
+import { altOf, img, projects, type Project } from '@/content/projects';
 import { Fig } from '../Fig';
 import { Rich } from '../Rich';
 import { LightWord } from './LightWord';
+import { ProcessTimeline } from './ProcessTimeline';
+import Image from 'next/image';
 
 export function Manifesto({ t }: { t: Dict['manifesto'] }) {
   return (
@@ -43,7 +45,7 @@ export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
       <div className="wrap shead"><h2 className="fade"><Rich text={t.title} /></h2><span className="label fade">{t.label}</span></div>
       <a className="proj pA wrap grid" href={href(kz)} data-curtain={kz.hour[lang]}>
         {T(kz, 1)}
-        <Fig className="f1" src="kz-2" alt={altOf(kz, 'kz-2')} sizes={big} />
+        <Fig className="f1" src="kz-4" alt={altOf(kz, 'kz-4')} sizes={big} />
         <Fig className="f2" src="kz-3" alt={altOf(kz, 'kz-3')} sizes={small} />
       </a>
       <a className="proj pB wrap grid" href={href(pl2)} data-curtain={pl2.hour[lang]}>
@@ -59,15 +61,15 @@ export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
       </a>
       <div className="dark">
         <a className="proj pD wrap grid" href={href(tk)} data-curtain={tk.hour[lang]}>
-          <Fig className="f1" src="tk-3" alt={altOf(tk, 'tk-3')} sizes={big} />
+          <Fig className="f1" src="tk-7" alt={altOf(tk, 'tk-7')} sizes={big} />
           {T(tk, 4)}
-          <Fig className="f2" src="tk-2" alt={altOf(tk, 'tk-2')} sizes={small} />
-          <Fig className="f3" src="tk-4" alt={altOf(tk, 'tk-4')} sizes={small} />
+          <Fig className="f2" src="tk-11" alt={altOf(tk, 'tk-11')} sizes={small} />
+          <Fig className="f3" src="tk-10" alt={altOf(tk, 'tk-10')} sizes={small} />
         </a>
       </div>
       <a className="proj pE wrap grid" href={href(znk)} data-curtain={znk.hour[lang]}>
         <Fig className="f0" src="znk-5" alt={altOf(znk, 'znk-5')} sizes={small} />
-        <Fig className="f1" src="znk-3" alt={altOf(znk, 'znk-3')} sizes={big} />
+        <Fig className="f1" src="znk-1" alt={altOf(znk, 'znk-1')} sizes={big} />
         {T(znk, 5)}
         <Fig className="f2" src="znk-4" alt={altOf(znk, 'znk-4')} sizes={small} />
       </a>
@@ -77,25 +79,26 @@ export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
 
 export function About({ t }: { t: Dict['about'] }) {
   return (
-    <section className="about" id="about" aria-label="About">
-      <div className="wrap grid about-g">
-        <h2 className="aname" aria-label="Iryna Riasnianska">
-          <span className="ln g"><span>Iryna</span></span>
-          <span className="ln s"><span className="it">Riasnianska</span></span>
-        </h2>
-        <Fig className="por" src="portrait-1" alt="Black-and-white portrait of Iryna Riasnianska" sizes="(max-width: 900px) 80vw, 40vw" />
-        <p className="aquote fade">{t.quote}</p>
-        <div className="bio fade">
-          {t.bio.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
-          <p className="draft">{t.draft}</p>
+    <section className="about2" id="about" aria-label={t.kicker}>
+      <div className="wrap ab-g">
+        <div className="ab-text">
+          <span className="kick">{t.kicker}</span>
+          <h2 className="ab-name"><span className="ln"><span>Iryna</span></span><span className="ln ab-l2"><span>Riasnianska</span></span></h2>
+          <span className="ab-role">{t.role}</span>
+          <p className="ab-quote fade">&ldquo;{t.quote}&rdquo;</p>
+          <div className="ab-bio fade">{t.bio.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}</div>
+          <ol className="ab-skills fade">{t.skills.map((s, i) => <li key={s}><span className="outline">0{i + 1}</span>{s}</li>)}</ol>
+          <dl className="ab-dl fade">
+            <div><dt>{t.based}</dt><dd>{t.basedV}</dd></div>
+            <div><dt>{t.fav}</dt><dd>{t.favV}</dd></div>
+            <div><dt>{t.tools}</dt><dd>3ds Max, Corona, Photoshop</dd></div>
+            <div><dt>{t.published}</dt><dd><a href="https://amazingarchitecture.com/visualization/elements-house-in-kharkiv-ukraine-by-mcorp" target="_blank" rel="noopener noreferrer">Amazing Architecture</a></dd></div>
+          </dl>
+          <a className="cta" href="#contact">{t.cta} <span aria-hidden="true">→</span></a>
         </div>
-        <dl className="adetails fade">
-          <div><dt className="label">{t.based}</dt><dd>{t.basedV}</dd></div>
-          <div><dt className="label">{t.fav}</dt><dd className="it">{t.favV}</dd></div>
-          <div><dt className="label">{t.discipline}</dt><dd>{t.disciplineV}</dd></div>
-          <div><dt className="label">{t.tools}</dt><dd>3ds Max, Corona Renderer, Photoshop</dd></div>
-          <div><dt className="label">{t.published}</dt><dd><a href="https://amazingarchitecture.com/visualization/elements-house-in-kharkiv-ukraine-by-mcorp" target="_blank" rel="noopener noreferrer">Amazing Architecture, 2022</a></dd></div>
-        </dl>
+        <figure className="ab-por rv brackets">
+          <Image src={img('portrait-1')} alt="Black-and-white portrait of Iryna Riasnianska" fill sizes="(max-width: 900px) 90vw, 35vw" />
+        </figure>
       </div>
     </section>
   );
@@ -109,27 +112,7 @@ const STEP_IMAGES: [string, string][] = [
 ];
 
 export function Process({ t }: { t: Dict['process'] }) {
-  return (
-    <section className="process wrap" aria-label="Process">
-      <div className="shead"><h2 className="fade"><Rich text={t.title} /></h2></div>
-      <div className="essay">
-        {t.steps.map(([word, h, p], i) => {
-          const [src, alt] = STEP_IMAGES[i];
-          const fig = <Fig src={src} alt={alt} sizes={i === 3 ? '100vw' : '(max-width: 700px) 100vw, 40vw'} />;
-          const w = <span className="w fade">{word}</span>;
-          const tx = <div className="tx fade"><h3>{h}</h3><p>{p}</p></div>;
-          return (
-            <div className={`step s${i + 1} grid`} key={word}>
-              {i === 0 && <>{w}{fig}{tx}</>}
-              {i === 1 && <>{w}{tx}{fig}</>}
-              {i === 2 && <>{fig}{w}{tx}</>}
-              {i === 3 && <>{fig}{w}{tx}</>}
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
+  return <ProcessTimeline t={t} images={STEP_IMAGES} />;
 }
 
 export const contact = contactInfo;

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getDict, isLang } from '@/content/i18n';
-import { Hero } from '@/components/home/Hero';
+import { HeroStory } from '@/components/home/HeroStory';
 import { About, Manifesto, Process, Spreads } from '@/components/home/Sections';
 import { DayStory } from '@/components/home/DayStory';
 import { ProjectIndex } from '@/components/home/ProjectIndex';
@@ -12,7 +12,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const t = getDict(lang);
   return (
     <main id="home">
-      <Hero t={t.hero} />
+      <HeroStory lang={lang} t={t.hero} w={t.work} />
       <Manifesto t={t.manifesto} />
       <Spreads lang={lang} t={t.work} />
       <DayStory lang={lang} t={t.story} view={t.work.view} />

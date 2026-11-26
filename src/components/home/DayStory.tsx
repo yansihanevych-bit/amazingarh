@@ -33,9 +33,11 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
         if (!el) return;
         let k = i === 0 ? 1 : Math.min(1, Math.max(0, f - (i - 1)));
         if (reduce) k = k > 0.5 ? 1 : 0;
-        el.style.clipPath = `inset(${((1 - k) * 100).toFixed(2)}% 0 0 0)`;
+        // crossfade: the next light dissolves in over the previous one
+        const e = k * k * (3 - 2 * k);
+        el.style.opacity = e.toFixed(3);
         const img = el.firstElementChild as HTMLElement | null;
-        if (img) img.style.transform = `scale(${(1.12 - 0.12 * k).toFixed(4)})`;
+        if (img) img.style.transform = `scale(${(1.06 - 0.06 * e).toFixed(4)})`;
       });
       const i0 = Math.floor(f), mix = f - i0, a = dayStory[i0], b = dayStory[Math.min(N - 1, i0 + 1)];
       if (tint.current && !reduce) {
@@ -59,14 +61,13 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
     scrollTo({ top: top + (span * i) / (N - 1) + 2, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
-  const cur = dayStory[active];
 
   return (
     <section className="daylight" id="hours" ref={section} style={{ height: `${N * 120 + 20}svh` }} aria-label={t.label}>
       <div className="dl-stage">
         {dayStory.map((s, i) => {
           return (
-            <div key={s.src + i} className="dl-frame" ref={(el) => { frames.current[i] = el; }} style={i === 0 ? undefined : { clipPath: 'inset(100% 0 0 0)' }} aria-hidden={i !== active}>
+            <div key={s.src + i} className="dl-frame" ref={(el) => { frames.current[i] = el; }} style={i === 0 ? undefined : { opacity: 0 }} aria-hidden={i !== active}>
               <Image src={img(s.src)} alt={s.alt} fill sizes="100vw" quality={90} loading={i < 2 ? 'eager' : 'lazy'} style={{ objectPosition: s.pos ?? '50% 50%' }} />
             </div>
           );
@@ -79,7 +80,11 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
         </div>
         <div className="dl-caption wrap">
           <span className="dl-count">{String(active + 1).padStart(2, '0')} / {String(N).padStart(2, '0')}</span>
-          <p className="dl-hour" key={cur.hour} aria-live="polite">{t.hours[cur.hour]}</p>
+          <p className="dl-hours" aria-live="polite">
+            {dayStory.map((d, i) => (
+              <span key={d.hour} className={`dl-hour${i === active ? ' on' : i < active ? ' past' : ''}`} aria-hidden={i !== active}>{t.hours[d.hour]}</span>
+            ))}
+          </p>
           <p className="dl-credit">{t.credit}</p>
         </div>
         <div className="dl-time wrap">

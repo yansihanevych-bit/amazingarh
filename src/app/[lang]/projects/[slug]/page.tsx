@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 /** Wide images take a full row; portraits pair up, every other pair offset; a lone portrait gets a quiet caption. */
-function Gallery({ images, hour }: { images: ProjectImage[]; hour: string }) {
+function Gallery({ images }: { images: ProjectImage[]; hour?: string }) {
   const out: React.ReactNode[] = [];
   let i = 0, k = 0;
   while (i < images.length) {
@@ -35,7 +35,7 @@ function Gallery({ images, hour }: { images: ProjectImage[]; hour: string }) {
     else if (b && b.shape === 'tall') {
       out.push(<div className={`wrap grid pair${k++ % 2 ? ' off' : ''}`} key={a.src}><Fig className="a" src={a.src} alt={a.alt} /><Fig className="b" src={b.src} alt={b.alt} /></div>);
       i += 2;
-    } else { out.push(<div className="wrap grid solo l" key={a.src}><Fig src={a.src} alt={a.alt} /><p className="quote fade">{hour}.</p></div>); i++; }
+    } else { out.push(<div className="wrap grid solo" key={a.src}><Fig className="s1" src={a.src} alt={a.alt} sizes="(max-width: 700px) 100vw, 60vw" /></div>); i++; }
   }
   return <div className="gal">{out}</div>;
 }
@@ -63,7 +63,6 @@ export default async function ProjectPage({ params }: Params) {
           <div><dt className="label">{t.project.viz}</dt><dd>Iryna Riasnianska</dd></div>
           <div><dt className="label">{t.project.light}</dt><dd>{p.hour[lang]}</dd></div>
         </dl>
-        <p className="draft" style={{ gridColumn: '1/13', margin: 0 }}>{t.project.draft}</p>
       </section>
       <Gallery images={p.images.filter((i) => i.src !== p.hero)} hour={p.hour[lang]} />
       <Drawings drawings={p.drawings} peel={p.peel} lang={lang} t={t.project} name={p.name} />

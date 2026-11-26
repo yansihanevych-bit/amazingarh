@@ -1,66 +1,56 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import type { Dict, Lang } from '@/content/i18n';
-import { img, press, projects } from '@/content/projects';
-import { Rich } from '../Rich';
+import { altOf, img, press, projects } from '@/content/projects';
 
-type Row = { key: string; name: string; architects: string; hour: string; year: number; href: string; cover: string | null; external?: boolean; curtain?: string };
+type Panel = { key: string; name: string; architects: string; hour: string; year: number; meta: string; href: string; cover: string | null; alt: string; external?: boolean };
+const TONES = ['terra', 'olive', 'sand', 'espresso', 'rose', 'clay'];
 
-/** Editorial index; on desktop a large preview follows the cursor softly, on touch a tap opens the row. */
+/** Index as an accordion of coloured columns: one opens wide, the rest stand as vertical spines. */
 export function ProjectIndex({ lang, t }: { lang: Lang; t: Dict['index'] }) {
-  const rows: Row[] = [
-    ...projects.map((p) => ({ key: p.slug, name: p.name, architects: p.architects, hour: p.hour[lang], year: p.year, href: `/${lang}/projects/${p.slug}`, cover: p.cover, curtain: p.hour[lang] })),
-    { key: 'press', name: press.name, architects: press.architects, hour: press.hour[lang], year: press.year, href: press.url, cover: null, external: true },
+  const panels: Panel[] = [
+    ...projects.map((p) => ({ key: p.slug, name: p.name, architects: p.architects, hour: p.hour[lang], year: p.year, meta: p.type[lang], href: `/${lang}/projects/${p.slug}`, cover: p.cover, alt: altOf(p, p.cover) })),
+    { key: 'press', name: press.name, architects: press.architects, hour: press.hour[lang], year: press.year, meta: 'Amazing Architecture', href: press.url, cover: null, alt: '', external: true },
   ];
-  const peek = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<Row | null>(null);
-  const [open, setOpen] = useState<string | null>(null);
-  const [fine, setFine] = useState(true);
-  const pos = useRef({ x: 0, y: 0, tx: 0, ty: 0, raf: 0 });
-
-  useEffect(() => { setFine(matchMedia('(pointer: fine)').matches); }, []);
-  useEffect(() => {
-    const p = pos.current;
-    if (!active) { cancelAnimationFrame(p.raf); p.raf = 0; return; }
-    const loop = () => {
-      p.x += (p.tx - p.x) * 0.14; p.y += (p.ty - p.y) * 0.14;
-      if (peek.current) { peek.current.style.left = `${p.x}px`; peek.current.style.top = `${p.y}px`; }
-      p.raf = requestAnimationFrame(loop);
-    };
-    if (!p.raf) loop();
-    return () => { cancelAnimationFrame(p.raf); p.raf = 0; };
-  }, [active]);
+  const [open, setOpen] = useState(0);
 
   return (
-    <section className="idx wrap" id="index" aria-label={t.title}>
-      <div className="shead" style={{ paddingBottom: 40 }}><h2 className="fade">{t.title}</h2><span className="label fade">{t.label}</span></div>
-      <div className="rows">
-        {rows.map((r) => (
-          <a
-            key={r.key}
-            className={`row fade${open === r.key ? ' open' : ''}`}
-            href={r.href}
-            data-curtain={r.curtain}
-            data-hold={!fine && r.cover && open !== r.key ? '1' : undefined}
-            {...(r.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            onMouseEnter={(e) => { if (!fine) return; const p = pos.current; p.x = p.tx = e.clientX + 180; p.y = p.ty = e.clientY; setActive(r); }}
-            onMouseMove={(e) => { pos.current.tx = e.clientX + 180; pos.current.ty = e.clientY; }}
-            onMouseLeave={() => setActive(null)}
-            onClick={(e) => { if (!fine && r.cover && open !== r.key) { e.preventDefault(); e.stopPropagation(); setOpen(r.key); } }}
-          >
-            <span className="n">{r.name}{r.external && <em>{t.press}</em>}</span>
-            <span className="s">{r.architects}</span>
-            <span className="s h it" style={{ fontSize: 18 }}>{r.hour}</span>
-            <span className="y">{r.year}</span>
-            {r.cover && <span className="row-img">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={img(r.cover)} alt="" loading="lazy" /></span>}
-          </a>
-        ))}
+    <section className="idx2" id="index" aria-label={t.title}>
+      <div className="wrap ix-head">
+        <div><span className="kick">{t.kicker}</span><h2 className="fade">{t.title}</h2></div>
+        <p className="ix-lead fade">{t.lead}</p>
       </div>
-      <div ref={peek} className={`peek${active ? ' on' : ''}`} aria-hidden="true">
-        {active?.cover
-          ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={img(active.cover)} alt="" />
-          : active && <div className="pub"><Rich text={t.pub} /></div>}
+      <div className="wrap ix-acc" role="list">
+        {panels.map((p, i) => {
+          const on = i === open;
+          return (
+            <div key={p.key} role="listitem" className={`ix-p tone-${TONES[i % TONES.length]}${on ? ' on' : ''}`} onMouseEnter={() => setOpen(i)}>
+              <button type="button" className="ix-spine" aria-expanded={on} aria-controls={`ix-${p.key}`} onClick={() => setOpen(i)} onFocus={() => setOpen(i)}>
+                <span className="ix-n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="ix-v">{p.name}</span>
+                <span className="ix-plus" aria-hidden="true">+</span>
+              </button>
+              <div className="ix-body" id={`ix-${p.key}`} hidden={!on}>
+                <div className="ix-top"><span className="ix-n">{String(i + 1).padStart(2, '0')}</span><span className="label">{p.hour} · {p.year}</span></div>
+                <div className="ix-main">
+                  <div className="ix-text">
+                    <h3>{p.name}</h3>
+                    <p className="ix-sub">{p.meta}</p>
+                    <ul>
+                      <li><span>{t.architects}</span>{p.architects}</li>
+                      <li><span>{t.label.split(' · ')[2]}</span>{p.hour}</li>
+                      <li><span>{t.label.split(' · ')[3]}</span>{p.year}</li>
+                    </ul>
+                    <a className="ix-go" href={p.href} {...(p.external ? { target: '_blank', rel: 'noopener noreferrer' } : { 'data-curtain': p.hour })}>{p.external ? t.read : t.view} ↗</a>
+                  </div>
+                  {p.cover && <figure className="ix-img"><Image src={img(p.cover)} alt={p.alt} fill sizes="(max-width: 800px) 90vw, 40vw" /></figure>}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

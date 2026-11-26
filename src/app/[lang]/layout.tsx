@@ -5,6 +5,7 @@ import { getDict, isLang, langs } from '@/content/i18n';
 import { Nav } from '@/components/Nav';
 import { Motion } from '@/components/Motion';
 import { Transitions } from '@/components/Transitions';
+import { Preloader } from '@/components/Preloader';
 import { siteUrl } from '@/lib/site';
 
 export const dynamicParams = false;
@@ -30,7 +31,7 @@ export const viewport: Viewport = {
 };
 
 /* Runs before paint: marks JS as available and restores the theme without a flash. */
-const boot = `(function(){try{var d=document.documentElement;d.classList.add('js');var t=localStorage.getItem('ai-theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.dataset.theme=t}catch(e){}})()`;
+const boot = `(function(){try{var d=document.documentElement;d.classList.add('js');if(sessionStorage.getItem('ai-seen'))d.classList.add('seen');var t=localStorage.getItem('ai-theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.dataset.theme=t}catch(e){}})()`;
 
 export default async function LangLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -45,6 +46,7 @@ export default async function LangLayout({ children, params }: { children: React
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Serif:ital@0;1&display=swap" />
       </head>
       <body>
+        <Preloader />
         <Nav lang={lang} />
         <Motion />
         <Transitions />
