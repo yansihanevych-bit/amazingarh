@@ -1,0 +1,21 @@
+'use client';
+
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+
+/** Scroll reveals: masks for images, line reveals for headings, soft fades for text. */
+export function Motion() {
+  const pathname = usePathname();
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }),
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+    );
+    const scan = () => document.querySelectorAll('.rv:not(.in),.fade:not(.in),.proj:not(.in),.ln:not(.in)').forEach((el) => io.observe(el));
+    scan();
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => { io.disconnect(); mo.disconnect(); };
+  }, [pathname]);
+  return null;
+}
