@@ -33,46 +33,34 @@ function Info({ p, lang, t, n, withLabel }: { p: Project; lang: Lang; t: Dict['w
 }
 const Title = ({ p }: { p: Project }) => <h3><span className="ln"><span>{p.name}</span></span></h3>;
 
-/** Five projects, five compositions: never the same card twice. */
+/** Selected light studies: one dominant project, then smaller studies placed asymmetrically. */
 export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
   const [kz, pl2, pl3, tk, znk] = projects;
-  const href = (p: Project) => `/${lang}/projects/${p.slug}`;
-  const T = (p: Project, n: number) => <div className="t"><span className="label">0{n} / 05</span><Title p={p} /><Info p={p} lang={lang} t={t} n={n} /></div>;
-  const big = '(max-width: 700px) 100vw, 50vw', small = '(max-width: 700px) 100vw, 30vw';
+  const Card = ({ p, n, src, cls, sizes }: { p: Project; n: number; src: string; cls: string; sizes: string }) => (
+    <a className={`st ${cls}`} href={`/${lang}/projects/${p.slug}`} data-curtain={p.hour[lang]}>
+      <Fig className="st-img" src={src} alt={altOf(p, src)} sizes={sizes} />
+      <div className="st-cap">
+        <span className="st-n">0{n}</span>
+        <h3 className="st-t"><span className="ln"><span>{p.name}</span></span></h3>
+        <dl className="st-meta">
+          <div><dt>{t.architects}</dt><dd>{p.architects}</dd></div>
+          <div><dt>{t.lightStudy}</dt><dd><em>{p.hour[lang]}</em></dd></div>
+        </dl>
+        <span className="st-more">{t.view} →</span>
+      </div>
+    </a>
+  );
   return (
-    <section id="work" aria-label={t.view}>
+    <section id="work" className="studies" aria-label={t.view}>
       <LightWord word={t.light} caption={t.lightCap} />
       <div className="wrap shead"><h2 className="fade"><Rich text={t.title} /></h2><span className="label fade">{t.label}</span></div>
-      <a className="proj pA wrap grid" href={href(kz)} data-curtain={kz.hour[lang]}>
-        {T(kz, 1)}
-        <Fig className="f1" src="kz-4" alt={altOf(kz, 'kz-4')} sizes={big} />
-        <Fig className="f2" src="kz-3" alt={altOf(kz, 'kz-3')} sizes={small} />
-      </a>
-      <a className="proj pB wrap grid" href={href(pl2)} data-curtain={pl2.hour[lang]}>
-        <Fig className="f1" src="pl2-6" alt={altOf(pl2, 'pl2-6')} sizes="100vw" />
-        <div className="t"><Title p={pl2} /></div>
-        <Info p={pl2} lang={lang} t={t} n={2} withLabel />
-      </a>
-      <a className="proj pC wrap grid" href={href(pl3)} data-curtain={pl3.hour[lang]}>
-        <div className="t"><span className="label">03 / 05</span><Title p={pl3} /></div>
-        <Fig className="f1" src="pl3-3" alt={altOf(pl3, 'pl3-3')} sizes={big} />
-        <Fig className="f2" src="pl3-5" alt={altOf(pl3, 'pl3-5')} sizes={small} />
-        <Info p={pl3} lang={lang} t={t} n={3} />
-      </a>
-      <div className="dark">
-        <a className="proj pD wrap grid" href={href(tk)} data-curtain={tk.hour[lang]}>
-          <Fig className="f1" src="tk-7" alt={altOf(tk, 'tk-7')} sizes={big} />
-          {T(tk, 4)}
-          <Fig className="f2" src="tk-11" alt={altOf(tk, 'tk-11')} sizes={small} />
-          <Fig className="f3" src="tk-10" alt={altOf(tk, 'tk-10')} sizes={small} />
-        </a>
+      <div className="wrap st-grid">
+        <Card p={kz} n={1} src="kz-3" cls="st-lead" sizes="100vw" />
+        <Card p={pl2} n={2} src="pl2-4" cls="st-a" sizes="(max-width: 800px) 100vw, 40vw" />
+        <Card p={pl3} n={3} src="pl3-1" cls="st-b" sizes="(max-width: 800px) 100vw, 55vw" />
+        <Card p={tk} n={4} src="tk-7" cls="st-c" sizes="(max-width: 800px) 100vw, 55vw" />
+        <Card p={znk} n={5} src="znk-1" cls="st-d" sizes="(max-width: 800px) 100vw, 35vw" />
       </div>
-      <a className="proj pE wrap grid" href={href(znk)} data-curtain={znk.hour[lang]}>
-        <Fig className="f0" src="znk-5" alt={altOf(znk, 'znk-5')} sizes={small} />
-        <Fig className="f1" src="znk-1" alt={altOf(znk, 'znk-1')} sizes={big} />
-        {T(znk, 5)}
-        <Fig className="f2" src="znk-4" alt={altOf(znk, 'znk-4')} sizes={small} />
-      </a>
     </section>
   );
 }

@@ -31,13 +31,14 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
       const f = p * (N - 1);
       frames.current.forEach((el, i) => {
         if (!el) return;
-        let k = i === 0 ? 1 : Math.min(1, Math.max(0, f - (i - 1)));
+        // each light holds, then dissolves into the next in the middle of its segment
+        let k = i === 0 ? 1 : Math.min(1, Math.max(0, (f - (i - 1) - 0.3) / 0.4));
         if (reduce) k = k > 0.5 ? 1 : 0;
         // crossfade: the next light dissolves in over the previous one
         const e = k * k * (3 - 2 * k);
         el.style.opacity = e.toFixed(3);
         const img = el.firstElementChild as HTMLElement | null;
-        if (img) img.style.transform = `scale(${(1.06 - 0.06 * e).toFixed(4)})`;
+        if (img && !reduce) img.style.transform = `scale(${(1.08 - 0.05 * p).toFixed(4)}) translate3d(0,${(-1.5 * p).toFixed(2)}%,0)`;
       });
       const i0 = Math.floor(f), mix = f - i0, a = dayStory[i0], b = dayStory[Math.min(N - 1, i0 + 1)];
       if (tint.current && !reduce) {
@@ -45,7 +46,7 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
         tint.current.style.background = `linear-gradient(180deg, rgba(${TINT[b.hour]},${strength.toFixed(3)}), rgba(${TINT[a.hour]},${(strength * 0.6).toFixed(3)}))`;
       }
       if (bar.current) bar.current.style.transform = `scaleX(${p.toFixed(4)})`;
-      const idx = Math.min(N - 1, Math.round(f));
+      const idx = Math.min(N - 1, Math.floor(f + 0.5));
       if (idx !== last) { last = idx; setActive(idx); }
     };
     const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); };
@@ -68,7 +69,7 @@ export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) 
         {dayStory.map((s, i) => {
           return (
             <div key={s.src + i} className="dl-frame" ref={(el) => { frames.current[i] = el; }} style={i === 0 ? undefined : { opacity: 0 }} aria-hidden={i !== active}>
-              <Image src={img(s.src)} alt={s.alt} fill sizes="100vw" quality={90} loading={i < 2 ? 'eager' : 'lazy'} style={{ objectPosition: s.pos ?? '50% 50%' }} />
+              <Image src={img(s.src)} alt={s.alt} fill sizes="(max-aspect-ratio: 1/1) 160vh, 100vw" quality={90} loading={i < 2 ? 'eager' : 'lazy'} style={{ objectPosition: s.pos ?? '50% 50%' }} />
             </div>
           );
         })}

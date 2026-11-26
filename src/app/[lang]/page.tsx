@@ -13,11 +13,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <main id="home">
       <HeroStory lang={lang} t={t.hero} w={t.work} />
+      <About t={t.about} />
       <Manifesto t={t.manifesto} />
       <Spreads lang={lang} t={t.work} />
       <DayStory lang={lang} t={t.story} view={t.work.view} />
       <ProjectIndex lang={lang} t={t.index} />
-      <About t={t.about} />
       <Process t={t.process} />
       <Contact lang={lang} t={t.contact} tag={t.hero.tag} />
     </main>

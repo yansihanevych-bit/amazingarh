@@ -23,7 +23,7 @@ const en = {
       ['Quiet post-work', 'No HDR glare, no impossible skies. Just the atmosphere the architecture deserves.'],
     ] as [string, string][],
   },
-  work: { title: 'Selected <em>light studies</em>', label: 'Five houses · five hours', architects: 'Architects', view: 'View study', light: 'Light', lightCap: 'Inside the letters: Pluty, Type 3 at dusk · architect Denis Davydov' },
+  work: { title: 'Selected <em>light studies</em>', label: 'Five houses · five hours', architects: 'Architects', lightStudy: 'Light study', view: 'View study', light: 'Light', lightCap: 'Inside the letters: Pluty, Type 3 at dusk · architect Denis Davydov' },
   story: {
     title: 'From noon <em>to night</em>', label: 'One house · three lights', credit: 'One house, one day · visualization by Iryna Riasnianska',
     hours: { noon: 'Noon', aft: 'Afternoon', golden: 'Golden hour', over: 'Overcast', canopy: 'Under canopy', dusk: 'Dusk', blue: 'Blue hour', night: 'Night' },
@@ -92,7 +92,7 @@ const pl: Dict = {
       ['Spokojna postprodukcja', 'Bez krzykliwego HDR i niemożliwych nieb. Tylko atmosfera, na jaką zasługuje architektura.'],
     ],
   },
-  work: { title: 'Wybrane <em>studia światła</em>', label: 'Pięć domów · pięć pór dnia', architects: 'Architekci', view: 'Zobacz studium', light: 'Światło', lightCap: 'W literach: Pluty, Type 3 o zmierzchu · architekt Denis Davydov' },
+  work: { title: 'Wybrane <em>studia światła</em>', label: 'Pięć domów · pięć pór dnia', architects: 'Architekci', lightStudy: 'Studium światła', view: 'Zobacz studium', light: 'Światło', lightCap: 'W literach: Pluty, Type 3 o zmierzchu · architekt Denis Davydov' },
   story: {
     title: 'Od południa <em>do nocy</em>', label: 'Jeden dom · trzy światła', credit: 'Jeden dom, jeden dzień · wizualizacja Iryna Riasnianska',
     hours: { noon: 'Południe', aft: 'Popołudnie', golden: 'Złota godzina', over: 'Pochmurno', canopy: 'Pod koronami drzew', dusk: 'Zmierzch', blue: 'Niebieska godzina', night: 'Noc' },

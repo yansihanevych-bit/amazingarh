@@ -17,9 +17,9 @@ export function Preloader() {
     if (root.classList.contains('seen')) { setPhase('done'); return; }
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.body.style.overflow = 'hidden';
-    const start = performance.now(), MIN = reduce ? 300 : 1500, MAX = 4500;
+    const start = performance.now(), MIN = reduce ? 300 : 1500, MAX = 3200;
 
-    const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('img')).slice(0, 6);
+    const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('img')).filter((im) => im.loading !== 'lazy').slice(0, 4);
     const tasks: Promise<unknown>[] = [document.fonts?.ready ?? Promise.resolve(), ...imgs.map((im) => (im.complete ? Promise.resolve() : new Promise((r) => { im.addEventListener('load', r, { once: true }); im.addEventListener('error', r, { once: true }); })))];
     let done = 0;
     tasks.forEach((t) => t.then(() => { done++; target.current = Math.max(target.current, Math.round((done / tasks.length) * 100)); }));

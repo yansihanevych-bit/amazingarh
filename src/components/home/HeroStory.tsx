@@ -74,8 +74,8 @@ export function HeroStory({ lang, t, w }: { lang: Lang; t: Dict['hero']; w: Dict
 
         {/* slides 1–5: projects */}
         {projects.map((p, i) => (
-          <div key={p.slug} className="cv-frame cv-proj" ref={(el) => { frames.current[i + 1] = el; }} style={{ clipPath: 'inset(100% 0 0 0)' }}>
-            <div className="cv-pic"><Image src={img(p.hero)} alt={altOf(p, p.hero)} fill sizes="100vw" quality={85} priority={i === 0} /></div>
+          <div key={p.slug} className={`cv-frame cv-proj${active === i + 1 ? ' cur' : ''}`} ref={(el) => { frames.current[i + 1] = el; }} style={{ clipPath: 'inset(100% 0 0 0)' }}>
+            <div className="cv-pic"><Image src={img(p.hero)} alt={altOf(p, p.hero)} fill sizes="(max-aspect-ratio: 1/1) 230vh, 100vw" quality={85} priority={i === 0} /></div>
             <div className="cv-scrim" />
             <a className="cv-cap wrap" href={`/${lang}/projects/${p.slug}`} data-curtain={p.hour[lang]} tabIndex={active === i + 1 ? 0 : -1}>
               <span className="label">0{i + 1} / 0{projects.length} · {p.type[lang]} · {p.year}</span>
