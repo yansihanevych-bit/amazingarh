@@ -27,7 +27,7 @@ export function Nav({ lang }: { lang: Lang }) {
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => () => { clearTimeout(eggTimers.current.show); clearTimeout(eggTimers.current.hide); }, []);
 
-  /** The light-mode easter egg: a tiny note from Ira beside the switch. */
+  /** The dark-mode easter egg: a tiny note from Ira beside the switch. */
   const showEgg = () => {
     const b = themeBtn.current?.getBoundingClientRect(), w = eggRef.current?.offsetWidth ?? 300, m = 16;
     if (!b) return;
@@ -54,8 +54,9 @@ export function Nav({ lang }: { lang: Lang }) {
     }
     const timers = eggTimers.current;
     clearTimeout(timers.show);
-    if (next === 'dark') { clearTimeout(timers.hide); setEgg((e) => ({ ...e, on: false })); }
-    else if (prev === 'dark' && Date.now() - timers.last > EGG_COOLDOWN && !egg.on) timers.show = window.setTimeout(showEgg, EGG_DELAY);
+    // Ira lights the way when it gets dark: only light -> dark shows the note.
+    if (next === 'light') { clearTimeout(timers.hide); setEgg((e) => ({ ...e, on: false })); }
+    else if (prev === 'light' && Date.now() - timers.last > EGG_COOLDOWN && !egg.on) timers.show = window.setTimeout(showEgg, EGG_DELAY);
   };
 
   const otherPath = (l: Lang) => pathname.replace(/^\/(en|pl)(?=\/|$)/, `/${l}`) || `/${l}`;

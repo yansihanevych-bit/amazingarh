@@ -8,7 +8,7 @@ const en = {
   nav: { work: 'Work', index: 'Index', about: 'About', contact: 'Contact', tavern: 'The Tavern', menu: 'Menu', close: 'Close', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', home: 'amazing-irchitect, home', lang: 'Language' },
   egg: "Now I'm the one lighting your way.",
   hero: {
-    tag: 'Architecture by Ira. Obviously.', meta2: 'Architectural visualization · Kharkiv — Poland', meta3: 'Selected work 2021 — 2024',
+    tag: 'Architecture by Ira. Obviously.', meta2: 'Architectural visualization · Warsaw — Poland', meta3: 'Selected work 2021 — 2024',
     sub: 'Light, <em>before</em> the walls.',
     intro: "I render houses that don't exist yet: the hour, the shadow, the weight of the air. So architects and their clients can stand inside a space before the first stone is laid.",
     fig1: 'Fig. 01 — KZ House', fig2: 'Fig. 02 — Pluty, Type 2',
@@ -23,10 +23,10 @@ const en = {
       ['Quiet post-work', 'No HDR glare, no impossible skies. Just the atmosphere the architecture deserves.'],
     ] as [string, string][],
   },
-  work: { title: 'Selected <em>light studies</em>', label: 'Five houses · five hours', architects: 'Architects', view: 'View study' },
+  work: { title: 'Selected <em>light studies</em>', label: 'Five houses · five hours', architects: 'Architects', view: 'View study', light: 'Light', lightCap: 'Inside the letters: Pluty, Type 3 at dusk · architect Denis Davydov' },
   story: {
-    title: 'From noon <em>to night</em>', label: 'One day · seven lights',
-    hours: { noon: 'Noon', aft: 'Afternoon', over: 'Overcast', canopy: 'Under canopy', dusk: 'Dusk', blue: 'Blue hour', night: 'Night' },
+    title: 'From noon <em>to night</em>', label: 'One house · three lights', credit: 'One house, one day · visualization by Iryna Riasnianska',
+    hours: { noon: 'Noon', aft: 'Afternoon', golden: 'Golden hour', over: 'Overcast', canopy: 'Under canopy', dusk: 'Dusk', blue: 'Blue hour', night: 'Night' },
   },
   index: { title: 'Index', label: 'Project · Architects · Light · Year', press: '↗ press', pub: 'Elements House<br>in Amazing Architecture' },
   about: {
@@ -38,6 +38,7 @@ const en = {
     ],
     draft: 'Draft biography, for Iryna to edit in her own words.',
     discipline: 'Discipline', disciplineV: 'Exterior & interior visualization, concept imagery', tools: 'Tools', published: 'Published',
+    based: 'Based in', basedV: 'Warsaw — Poland', fav: 'Favourite light', favV: 'The blue hour',
   },
   process: {
     title: 'How a house <em>gets its light</em>',
@@ -55,7 +56,7 @@ const en = {
     fallback: 'Open the message in your mail app', or: ' — or write directly to ', subject: 'Visualization enquiry',
     credit: 'All images are visualizations by Iryna Riasnianska for the credited architects.', start: 'Start a project →',
   },
-  project: { back: '← All work', type: 'Type', year: 'Year', viz: 'Visualization', light: 'Light', next: 'Next study', draft: 'Project text is a draft written from the images, for Iryna to confirm.' },
+  project: { drawings: 'Drawings', drawingsL: 'Plans, elevations, axonometrics', peelT: 'Taking the <em>roof</em> off', peelSteps: ['Roof', 'Structure', 'Walls', 'Plan'], open: 'Open drawing', close: 'Close', back: '← All work', type: 'Type', year: 'Year', viz: 'Visualization', light: 'Light', next: 'Next study', draft: 'Project text is a draft written from the images, for Iryna to confirm.' },
   tavern: {
     title: 'Tavern Builder', sub: 'Stack the blocks as precisely as you can. Every miss gets trimmed off, and the house grows narrower and taller.',
     start: 'Start Building', how: 'Click, tap or press Space to drop a block.', built: 'Blocks built', best: 'Best',
@@ -73,7 +74,7 @@ const pl: Dict = {
   nav: { work: 'Projekty', index: 'Indeks', about: 'O mnie', contact: 'Kontakt', tavern: 'Tawerna', menu: 'Menu', close: 'Zamknij', toDark: 'Włącz ciemny motyw', toLight: 'Włącz jasny motyw', home: 'amazing-irchitect, strona główna', lang: 'Język' },
   egg: 'Teraz to ja oświetlam Ci drogę.',
   hero: {
-    tag: 'Architektura od Iry. Oczywiście.', meta2: 'Wizualizacja architektury · Charków — Polska', meta3: 'Wybrane prace 2021 — 2024',
+    tag: 'Architektura od Iry. Oczywiście.', meta2: 'Wizualizacja architektury · Warszawa — Polska', meta3: 'Wybrane prace 2021 — 2024',
     sub: 'Światło, <em>zanim</em> staną ściany.',
     intro: 'Renderuję domy, których jeszcze nie ma: porę dnia, cień, ciężar powietrza. Żeby architekci i ich klienci mogli stanąć w przestrzeni, zanim położony zostanie pierwszy kamień.',
     fig1: 'Ryc. 01 — KZ House', fig2: 'Ryc. 02 — Pluty, Type 2',
@@ -88,10 +89,10 @@ const pl: Dict = {
       ['Spokojna postprodukcja', 'Bez krzykliwego HDR i niemożliwych nieb. Tylko atmosfera, na jaką zasługuje architektura.'],
     ],
   },
-  work: { title: 'Wybrane <em>studia światła</em>', label: 'Pięć domów · pięć pór dnia', architects: 'Architekci', view: 'Zobacz studium' },
+  work: { title: 'Wybrane <em>studia światła</em>', label: 'Pięć domów · pięć pór dnia', architects: 'Architekci', view: 'Zobacz studium', light: 'Światło', lightCap: 'W literach: Pluty, Type 3 o zmierzchu · architekt Denis Davydov' },
   story: {
-    title: 'Od południa <em>do nocy</em>', label: 'Jeden dzień · siedem świateł',
-    hours: { noon: 'Południe', aft: 'Popołudnie', over: 'Pochmurno', canopy: 'Pod koronami drzew', dusk: 'Zmierzch', blue: 'Niebieska godzina', night: 'Noc' },
+    title: 'Od południa <em>do nocy</em>', label: 'Jeden dom · trzy światła', credit: 'Jeden dom, jeden dzień · wizualizacja Iryna Riasnianska',
+    hours: { noon: 'Południe', aft: 'Popołudnie', golden: 'Złota godzina', over: 'Pochmurno', canopy: 'Pod koronami drzew', dusk: 'Zmierzch', blue: 'Niebieska godzina', night: 'Noc' },
   },
   index: { title: 'Indeks', label: 'Projekt · Architekci · Światło · Rok', press: '↗ prasa', pub: 'Elements House<br>w Amazing Architecture' },
   about: {
@@ -103,6 +104,7 @@ const pl: Dict = {
     ],
     draft: 'Wstępna wersja biografii — do edycji przez Irynę.',
     discipline: 'Specjalizacja', disciplineV: 'Wizualizacje zewnętrzne i wnętrz, obrazy koncepcyjne', tools: 'Narzędzia', published: 'Publikacje',
+    based: 'Miejsce', basedV: 'Warszawa — Polska', fav: 'Ulubione światło', favV: 'Niebieska godzina',
   },
   process: {
     title: 'Jak dom <em>dostaje swoje światło</em>',
@@ -120,7 +122,7 @@ const pl: Dict = {
     fallback: 'Otwórz wiadomość w programie pocztowym', or: ' — lub napisz bezpośrednio na ', subject: 'Zapytanie o wizualizację',
     credit: 'Wszystkie obrazy to wizualizacje Iryny Riasnianskiej dla wskazanych architektów.', start: 'Zacznij projekt →',
   },
-  project: { back: '← Wszystkie projekty', type: 'Typ', year: 'Rok', viz: 'Wizualizacja', light: 'Światło', next: 'Następne studium', draft: 'Opis projektu to wersja robocza napisana na podstawie obrazów — do potwierdzenia przez Irynę.' },
+  project: { drawings: 'Rysunki', drawingsL: 'Rzuty, elewacje, aksonometrie', peelT: 'Zdejmujemy <em>dach</em>', peelSteps: ['Dach', 'Konstrukcja', 'Ściany', 'Rzut'], open: 'Otwórz rysunek', close: 'Zamknij', back: '← Wszystkie projekty', type: 'Typ', year: 'Rok', viz: 'Wizualizacja', light: 'Światło', next: 'Następne studium', draft: 'Opis projektu to wersja robocza napisana na podstawie obrazów — do potwierdzenia przez Irynę.' },
   tavern: {
     title: 'Tavern Builder', sub: 'Układaj bloki jak najdokładniej. Każdy nadmiar zostaje odcięty, a dom robi się węższy i wyższy.',
     start: 'Zacznij budować', how: 'Kliknij, dotknij lub naciśnij spację, aby postawić blok.', built: 'Postawione bloki', best: 'Rekord',

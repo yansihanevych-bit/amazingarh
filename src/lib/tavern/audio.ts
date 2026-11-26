@@ -10,6 +10,7 @@ const TUNE: Note[][] = [
 ];
 const BASS = [0, -2, 0, -5, 3, -2, 5, 0];
 const EIGHTH = 0.215;
+const TRACK_URL = '/audio/tavern.mp3';
 const hz = (s: number) => 293.66 * Math.pow(2, s / 12);
 
 export type Sfx = 'place' | 'perfect' | 'ach' | 'grand' | 'over';
@@ -24,6 +25,23 @@ class TavernAudio {
   private step = 0;
   private loop = 0;
   enabled = true;
+  /** Optional licensed track at /audio/tavern.mp3; falls back to the synthesized tune. */
+  private track: HTMLAudioElement | null = null;
+  private trackState: 'unknown' | 'checking' | 'yes' | 'no' = 'unknown';
+
+  private checkTrack() {
+    if (this.trackState !== 'unknown') return;
+    this.trackState = 'checking';
+    fetch(TRACK_URL, { method: 'HEAD' })
+      .then((r) => {
+        const ok = r.ok && (r.headers.get('content-type') ?? '').startsWith('audio');
+        this.trackState = ok ? 'yes' : 'no';
+        if (ok) { const a = new Audio(TRACK_URL); a.loop = true; a.volume = 0.35; a.preload = 'auto'; this.track = a; }
+        if (this.wantMusic) this.playMusic();
+      })
+      .catch(() => { this.trackState = 'no'; if (this.wantMusic) this.playMusic(); });
+  }
+  private wantMusic = false;
 
   private init(): boolean {
     if (this.ctx) return true;
@@ -91,7 +109,11 @@ class TavernAudio {
   };
 
   playMusic() {
-    if (!this.enabled || !this.init()) return;
+    this.wantMusic = true;
+    if (!this.enabled) return;
+    if (this.trackState === 'unknown' || this.trackState === 'checking') { this.checkTrack(); return; }
+    if (this.trackState === 'yes' && this.track) { void this.track.play().catch(() => {}); return; }
+    if (!this.init()) return;
     const c = this.ctx!;
     if (c.state === 'suspended') void c.resume();
     if (this.timer) return;
@@ -103,6 +125,8 @@ class TavernAudio {
   }
 
   stopMusic() {
+    this.wantMusic = false;
+    this.track?.pause();
     if (!this.ctx) return;
     window.clearInterval(this.timer); this.timer = 0;
     this.music.gain.setTargetAtTime(0, this.ctx.currentTime, 0.25);

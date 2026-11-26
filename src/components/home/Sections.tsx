@@ -3,6 +3,7 @@ import { contactInfo } from '@/content/i18n';
 import { altOf, projects, type Project } from '@/content/projects';
 import { Fig } from '../Fig';
 import { Rich } from '../Rich';
+import { LightWord } from './LightWord';
 
 export function Manifesto({ t }: { t: Dict['manifesto'] }) {
   return (
@@ -38,6 +39,7 @@ export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
   const big = '(max-width: 700px) 100vw, 50vw', small = '(max-width: 700px) 100vw, 30vw';
   return (
     <section id="work" aria-label={t.view}>
+      <LightWord word={t.light} caption={t.lightCap} />
       <div className="wrap shead"><h2 className="fade"><Rich text={t.title} /></h2><span className="label fade">{t.label}</span></div>
       <a className="proj pA wrap grid" href={href(kz)} data-curtain={kz.hour[lang]}>
         {T(kz, 1)}
@@ -76,15 +78,20 @@ export function Spreads({ lang, t }: { lang: Lang; t: Dict['work'] }) {
 export function About({ t }: { t: Dict['about'] }) {
   return (
     <section className="about" id="about" aria-label="About">
-      <div className="wrap grid" style={{ rowGap: 28 }}>
-        <Fig className="por" src="portrait-1" alt="Black-and-white portrait of Iryna Riasnianska" sizes="(max-width: 900px) 70vw, 40vw" />
-        <h2 className="fade">Iryna <em>Riasnianska</em></h2>
+      <div className="wrap grid about-g">
+        <h2 className="aname" aria-label="Iryna Riasnianska">
+          <span className="ln g"><span>Iryna</span></span>
+          <span className="ln s"><span className="it">Riasnianska</span></span>
+        </h2>
+        <Fig className="por" src="portrait-1" alt="Black-and-white portrait of Iryna Riasnianska" sizes="(max-width: 900px) 80vw, 40vw" />
         <p className="aquote fade">{t.quote}</p>
         <div className="bio fade">
           {t.bio.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
           <p className="draft">{t.draft}</p>
         </div>
-        <dl className="fade">
+        <dl className="adetails fade">
+          <div><dt className="label">{t.based}</dt><dd>{t.basedV}</dd></div>
+          <div><dt className="label">{t.fav}</dt><dd className="it">{t.favV}</dd></div>
           <div><dt className="label">{t.discipline}</dt><dd>{t.disciplineV}</dd></div>
           <div><dt className="label">{t.tools}</dt><dd>3ds Max, Corona Renderer, Photoshop</dd></div>
           <div><dt className="label">{t.published}</dt><dd><a href="https://amazingarchitecture.com/visualization/elements-house-in-kharkiv-ukraine-by-mcorp" target="_blank" rel="noopener noreferrer">Amazing Architecture, 2022</a></dd></div>

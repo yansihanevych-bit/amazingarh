@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getDict, isLang, langs } from '@/content/i18n';
 import { getProject, img, projects, type ProjectImage } from '@/content/projects';
 import { Fig } from '@/components/Fig';
+import { Drawings } from '@/components/Drawings';
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -65,6 +66,7 @@ export default async function ProjectPage({ params }: Params) {
         <p className="draft" style={{ gridColumn: '1/13', margin: 0 }}>{t.project.draft}</p>
       </section>
       <Gallery images={p.images.filter((i) => i.src !== p.hero)} hour={p.hour[lang]} />
+      <Drawings drawings={p.drawings} peel={p.peel} lang={lang} t={t.project} name={p.name} />
       <a className="next" href={`/${lang}/projects/${next.slug}`} data-curtain={next.hour[lang]}>
         <figure className="rv"><Image src={img(next.cover)} alt="" fill sizes="100vw" /></figure>
         <div className="nt"><span className="label" style={{ color: '#d9c4bc' }}>{t.project.next} · {next.hour[lang]}</span><span className="big">{next.name}</span></div>

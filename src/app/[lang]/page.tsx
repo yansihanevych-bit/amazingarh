@@ -15,7 +15,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Hero t={t.hero} />
       <Manifesto t={t.manifesto} />
       <Spreads lang={lang} t={t.work} />
-      <DayStory lang={lang} t={t.story} />
+      <DayStory lang={lang} t={t.story} view={t.work.view} />
       <ProjectIndex lang={lang} t={t.index} />
       <About t={t.about} />
       <Process t={t.process} />

@@ -3,67 +3,92 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import type { Dict, Lang } from '@/content/i18n';
-import { altOf, dayStory, getProject, img } from '@/content/projects';
+import { dayStory, img } from '@/content/projects';
 import { Rich } from '../Rich';
 
-/** "From noon to night": vertical scroll drives a horizontal track. Swipeable on small screens. */
-export function DayStory({ lang, t }: { lang: Lang; t: Dict['story'] }) {
-  const section = useRef<HTMLElement>(null), track = useRef<HTMLDivElement>(null);
-  const [swipe, setSwipe] = useState(false);
+/* The colour of the air for each hour: a faint tint laid over the frame during the change. */
+const TINT: Record<string, string> = { noon: '255,236,190', aft: '255,214,160', golden: '255,170,90', over: '170,178,185', canopy: '170,200,150', dusk: '255,150,90', blue: '70,100,190', night: '20,24,50' };
+
+/**
+ * "From noon to night": a pinned, full-screen sequence. Scrolling moves the hour forward;
+ * each new light rises over the previous one like a change of atmosphere, not a slide.
+ */
+export function DayStory({ t }: { lang: Lang; t: Dict['story']; view: string }) {
+  const section = useRef<HTMLElement>(null);
+  const frames = useRef<(HTMLDivElement | null)[]>([]);
+  const tint = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const N = dayStory.length;
 
   useEffect(() => {
-    const sec = section.current!, tr = track.current!;
+    const sec = section.current!;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let dist = 0, raf = 0;
-    const onScroll = () => {
-      if (sec.classList.contains('swipe')) return;
+    let raf = 0, last = -1;
+    const render = () => {
       const r = sec.getBoundingClientRect(), span = r.height - innerHeight;
-      const k = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-      tr.style.transform = `translate3d(${(-k * dist).toFixed(1)}px,0,0)`;
+      const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+      const f = p * (N - 1);
+      frames.current.forEach((el, i) => {
+        if (!el) return;
+        let k = i === 0 ? 1 : Math.min(1, Math.max(0, f - (i - 1)));
+        if (reduce) k = k > 0.5 ? 1 : 0;
+        el.style.clipPath = `inset(${((1 - k) * 100).toFixed(2)}% 0 0 0)`;
+        const img = el.firstElementChild as HTMLElement | null;
+        if (img) img.style.transform = `scale(${(1.12 - 0.12 * k).toFixed(4)})`;
+      });
+      const i0 = Math.floor(f), mix = f - i0, a = dayStory[i0], b = dayStory[Math.min(N - 1, i0 + 1)];
+      if (tint.current && !reduce) {
+        const strength = Math.sin(mix * Math.PI) * 0.28;
+        tint.current.style.background = `linear-gradient(180deg, rgba(${TINT[b.hour]},${strength.toFixed(3)}), rgba(${TINT[a.hour]},${(strength * 0.6).toFixed(3)}))`;
+      }
+      if (bar.current) bar.current.style.transform = `scaleX(${p.toFixed(4)})`;
+      const idx = Math.min(N - 1, Math.round(f));
+      if (idx !== last) { last = idx; setActive(idx); }
     };
-    const setup = () => {
-      const sw = innerWidth < 760 || reduce;
-      setSwipe(sw); sec.classList.toggle('swipe', sw);
-      if (sw) { sec.style.height = ''; tr.style.transform = ''; return; }
-      dist = Math.max(0, tr.scrollWidth - innerWidth);
-      sec.style.height = `${dist + innerHeight}px`;
-      onScroll();
-    };
-    const scroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(onScroll); };
-    setup();
-    window.addEventListener('resize', setup);
-    window.addEventListener('scroll', scroll, { passive: true });
-    return () => { window.removeEventListener('resize', setup); window.removeEventListener('scroll', scroll); cancelAnimationFrame(raf); };
-  }, []);
+    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); };
+    render();
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    return () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+  }, [N]);
 
-  const move = (dir: number) => {
-    const tr = track.current; if (!tr) return;
-    tr.scrollBy({ left: dir * tr.clientWidth * 0.8, behavior: 'smooth' });
+  const jump = (i: number) => {
+    const sec = section.current; if (!sec) return;
+    const span = sec.offsetHeight - innerHeight, top = sec.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + (span * i) / (N - 1) + 2, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
+  const cur = dayStory[active];
+
   return (
-    <section className="hstory" id="hours" ref={section} aria-label={t.label}>
-      <div className="hs-sticky">
-        <div className="hs-head wrap">
+    <section className="daylight" id="hours" ref={section} style={{ height: `${N * 120 + 20}svh` }} aria-label={t.label}>
+      <div className="dl-stage">
+        {dayStory.map((s, i) => {
+          return (
+            <div key={s.src + i} className="dl-frame" ref={(el) => { frames.current[i] = el; }} style={i === 0 ? undefined : { clipPath: 'inset(100% 0 0 0)' }} aria-hidden={i !== active}>
+              <Image src={img(s.src)} alt={s.alt} fill sizes="100vw" quality={90} loading={i < 2 ? 'eager' : 'lazy'} style={{ objectPosition: s.pos ?? '50% 50%' }} />
+            </div>
+          );
+        })}
+        <div className="dl-tint" ref={tint} aria-hidden="true" />
+        <div className="dl-scrim" aria-hidden="true" />
+        <div className="dl-head wrap">
           <h2><Rich text={t.title} /></h2>
           <span className="label">{t.label}</span>
-          {swipe && (
-            <span className="hs-nav">
-              <button type="button" aria-label="Previous" onClick={() => move(-1)}>←</button>
-              <button type="button" aria-label="Next" onClick={() => move(1)}>→</button>
-            </span>
-          )}
         </div>
-        <div className="hs-track" ref={track} tabIndex={swipe ? 0 : -1} onKeyDown={(e) => { if (e.key === 'ArrowRight') move(1); if (e.key === 'ArrowLeft') move(-1); }}>
-          {dayStory.map((s, i) => {
-            const p = getProject(s.slug)!;
-            return (
-              <a key={s.src + i} className={`hs-item ${s.shape === 'wide' ? 'w' : 'p'}`} href={`/${lang}/projects/${p.slug}`} data-curtain={p.hour[lang]}>
-                <figure><Image src={img(s.src)} alt={altOf(p, s.src)} fill sizes="(max-width: 760px) 85vw, 60vw" /></figure>
-                <div className="hs-cap"><b>{t.hours[s.hour]}</b><span>0{i + 1} · {p.name}</span></div>
-              </a>
-            );
-          })}
+        <div className="dl-caption wrap">
+          <span className="dl-count">{String(active + 1).padStart(2, '0')} / {String(N).padStart(2, '0')}</span>
+          <p className="dl-hour" key={cur.hour} aria-live="polite">{t.hours[cur.hour]}</p>
+          <p className="dl-credit">{t.credit}</p>
+        </div>
+        <div className="dl-time wrap">
+          <div className="dl-track"><div className="dl-bar" ref={bar} /></div>
+          <ol>
+            {dayStory.map((s, i) => (
+              <li key={s.src + i}><button type="button" className={i === active ? 'on' : ''} onClick={() => jump(i)} aria-current={i === active ? 'step' : undefined}>{t.hours[s.hour]}</button></li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
